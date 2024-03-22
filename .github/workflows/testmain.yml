@@ -38,7 +38,7 @@ jobs:
       - name: set up boot-sp
         run: |
           git clone https://github.com/boot-sp/boot-sp.git
-          cd boot-sp && pip install .
+          cd boot-sp && pip install -e .
 
       - name: setup the program
         run: |
