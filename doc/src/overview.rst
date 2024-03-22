@@ -11,20 +11,9 @@ not tested there. This documentation assumes you are using a Unix
 shell such as Bash.
 
 
-Roles
------
-
-We take that view that there are the following roles (that might be
-filled by one person, or multiple people):
-
-- *Modeler*: creates the Pyomo model and establishes the nature of the scenario tree.
-- *User*: runs a program to get the results of function value evaluation along with confidence intervals.
-- *Contributors to smais*: the creators of, and contributors to, ``smais``.
-
 Basics
 ------
 
 The ``smais`` software relies on a ``Pyomo`` model to define the underlying problem (i.e., a deterministic scenario) and relies
 on ``mpi-sppy`` and ``boot-sp``for some low level functions. All of these packages must be installed.
-
 
