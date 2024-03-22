@@ -28,7 +28,7 @@ jobs:
         run: |
           conda install setuptools 
           pip install pyomo gurobipy smt multiprocessing_on_dill
-          conda install -c conda-forge ipopt pandas
+          conda install -c conda-forge ipopt pandas matplotlib
 
       - name: set up mpi-sppy
         run: |
