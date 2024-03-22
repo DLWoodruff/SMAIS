@@ -42,10 +42,10 @@ jobs:
 
       - name: setup the program
         run: |
-          pip install .
+          pip install -e .
 
       - name: run tests
-        timeout-minutes: 100
+        timeout-minutes: 10
         run: |
           cd smais/tests
           python test_simulate.py 
