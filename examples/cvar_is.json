@@ -1,0 +1,19 @@
+{
+    "module_name": "cvar_is",
+    "initial_sample_size": 40,
+    "assess_size": 40,
+    "additional_sample_size": 40,
+    "assess_batch_size": 200,
+    "eval_batch_size": 100,
+    "sp_integral_size": 1000,
+    "adaptive_error_threshold_factor": 0.1,
+    "evaluation_N": 200,
+    "max_iter": 10,
+    "surrogate_json":"KRG.json",
+    "seed_offset" :0,
+    "xhat_fname": "cvar_xhat.npy",
+    "solver_name": "gurobi",
+    "solver_options": "threads=2",
+    "log_frequency": 3,
+    "num_processes": 1
+}

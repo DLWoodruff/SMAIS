@@ -1,0 +1,9 @@
+{
+    "surrogate_type": "RMTB",
+    "kwargs": { "order":3, 
+                "num_ctrl_pts": 20, 
+                "energy_weight":1e-4, 
+                "regularization_weight": 1e-4,
+                "nonlinear_maxiter":40
+            }
+}

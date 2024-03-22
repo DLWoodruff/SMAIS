@@ -1,0 +1,20 @@
+{
+    "module_name": "multi_knapsack_is",
+    "initial_sample_size": 80,
+    "assess_size": 20,
+    "additional_sample_size": 40,
+    "assess_batch_size": 1000,
+    "eval_batch_size": 200,
+    "sp_integral_size": 1000000,
+    "adaptive_error_threshold_factor": 0.1,
+    "evaluation_N": 200,
+    "max_iter": 100,
+    "surrogate_json":"KRG.json",
+    "seed_offset" :0,
+    "xhat_fname": "multi_knapsack_xhat.npy",
+    "solver_name": "gurobi",
+    "solver_options": "threads=2",
+    "deterministic_data_json": "multi_knapsack_data.json",
+    "log_frequency": 3,
+    "num_processes": 16
+}
