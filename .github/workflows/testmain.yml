@@ -33,7 +33,7 @@ jobs:
       - name: set up mpi-sppy
         run: |
           git clone https://github.com/pyomo/mpi-sppy
-          cd mpi-sppy && pip install .
+          cd mpi-sppy && pip install -e .
 
       - name: set up boot-sp
         run: |
