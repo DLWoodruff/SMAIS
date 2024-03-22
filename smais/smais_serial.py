@@ -13,7 +13,6 @@ import json
 from smt.sampling_methods import LHS
 from smt.surrogate_models import KRG,RBF,RMTB
 import scipy.stats as stats
-import matplotlib.pyplot as plt
 import time
 from mpisppy import global_toc
       

@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           conda install setuptools 
-          pip install pyomo matplotlib pandas gurobi
+          pip install pyomo gurobipy
           conda install -c conda-forge ipopt
 
       - name: set up mpi-sppy

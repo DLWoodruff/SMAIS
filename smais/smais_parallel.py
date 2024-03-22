@@ -3,7 +3,6 @@ import smt
 import scipy
 # from scipy.stats import qmc
 import numpy as np
-import pandas as pd
 import scipy
 import pyomo.environ as pyo
 import scipy.optimize as opt
@@ -14,7 +13,6 @@ import json
 from smt.sampling_methods import LHS
 from smt.surrogate_models import  KRG
 import scipy.stats as stats
-import matplotlib.pyplot as plt
 import time
 from mpisppy import global_toc
 from multiprocessing_on_dill import Pool, Manager, Value, Lock, Process

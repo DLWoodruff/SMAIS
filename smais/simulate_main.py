@@ -3,7 +3,6 @@ import smt
 import scipy
 # from scipy.stats import qmc
 import numpy as np
-import pandas as pd
 import scipy
 import pyomo.environ as pyo
 import scipy.optimize as opt
@@ -15,7 +14,6 @@ from smt.sampling_methods import LHS
 from smt.surrogate_models import  KRG
 from bootsp import boot_sp
 import scipy.stats as stats
-import matplotlib.pyplot as plt
 from mpisppy import global_toc
 import smais.smais_parallel as smais_parallel
 import smais.smais_serial as smais_serial
