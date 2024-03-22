@@ -1,0 +1,22 @@
+{
+    "module_name": "farmer_is",
+    "initial_sample_size": 3,
+    "assess_size": 10,
+    "additional_sample_size": 40,
+    "assess_batch_size": 200,
+    "eval_batch_size": 100,
+    "sp_integral_size": 5000,
+    "adaptive_error_threshold_factor": 0.03,
+    "evaluation_N": 500,
+    "max_iter": 20,
+    "surrogate_json":"KRG.json",
+    "seed_offset" :0,
+    "xhat_fname": "farmer_xhat.npy",
+    "solver_name": "gurobi",
+    "solver_options": "threads=2",
+    "crops_multiplier": 1,
+    "farmer_with_integers": "False",
+    "yield_cv": "0.1",
+    "log_frequency": 3,
+    "num_processes": 16
+}
