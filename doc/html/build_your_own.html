@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Create a new instance &#8212; smais 0.2.dev0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <script src="_static/documentation_options.js?v=b420214a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="refs.html" />
+    <link rel="prev" title="Pre-built Examples" href="canned.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="create-a-new-instance">
+<span id="build"></span><h1>Create a new instance<a class="headerlink" href="#create-a-new-instance" title="Link to this heading">¶</a></h1>
+<p>Most users want to copy one of the pre-built examples and modify it to create a new instance. The documentation provided here
+helps with understanding that and also provides information for users who want to start from scratch.
+An instance is defined by a <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">module</span></code>, which is usually a file with a <code class="docutils literal notranslate"><span class="pre">.py</span></code> filename extension.
+The file <code class="docutils literal notranslate"><span class="pre">/examples/cvar_is.py</span></code> is a simple example and the file <code class="docutils literal notranslate"><span class="pre">/examples/farmer_is.py</span></code> is a more complicated example.</p>
+<p>In order to use this package, you need to have a candidate solution <cite>xhat</cite> in a file with special format (numpy).
+To create this npy file, you need to use mpi-sppy.</p>
+<section id="scenario-creator-function">
+<h2><cite>scenario_creator</cite> function<a class="headerlink" href="#scenario-creator-function" title="Link to this heading">¶</a></h2>
+<p>This function instantiates models for scenarios and usually attaches
+some information about the scenario tree. Its first argument must be the scenario name, and the second argument must be a configuration file with model-specific settings. The other
+two arguments are optional.</p>
+<p>The <cite>scenario_creator_kwargs</cite> option specifies data that is
+passed through from the calling program.
+<cite>scenario_creator_kwargs</cite> must be a dictionary, and might give, e.g., a data
+directory name or probability distribution information.  The
+<cite>scenario_creator</cite> function returns an instantiated model for the
+instance. I.e., it either creates a <cite>ConcreteModel</cite> or else it creates
+and instantiates an <cite>AbstractModel</cite>.</p>
+<p>The <cite>scenario_creator</cite> function somehow needs to create a list of
+non-leaf tree node objects that are constructed by calling
+<cite>scenario_tree.ScenarioNode</cite> which is not very hard for two stage
+problems, because there is only one non-leaf node and it must be
+called “ROOT”.
+Node list entries can be entered individually, by adding an entire
+variable implicitly including all index values, and/or by using wildcards. This is
+illustrated in the <code class="docutils literal notranslate"><span class="pre">mpi-sppy</span></code> netdes example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add all indexes of model.x</span>
+<span class="n">sputils</span><span class="o">.</span><span class="n">attach_root_node</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">FirstStageCost</span><span class="p">,</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add all index of model.x using wild cards</span>
+<span class="n">sputils</span><span class="o">.</span><span class="n">attach_root_node</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">FirstStageCost</span><span class="p">,</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">[:,:],</span> <span class="p">])</span>
+</pre></div>
+</div>
+<p>The scenario probability should be attached by <cite>scenario_creator</cite> as
+<code class="docutils literal notranslate"><span class="pre">_mpisppy_probability</span></code>. However, if you don’t attach it, the scenarios are
+assumed to be equally likely.</p>
+<blockquote>
+<div><p>See the <code class="docutils literal notranslate"><span class="pre">mpi-sppy</span></code> documenation for more information about this function.</p>
+</div></blockquote>
+<section id="ef-supplement-list">
+<h3>EF Supplement List<a class="headerlink" href="#ef-supplement-list" title="Link to this heading">¶</a></h3>
+<p>Advanced topic: The function <code class="docutils literal notranslate"><span class="pre">attach_root_node</span></code> takes an optional argument <code class="docutils literal notranslate"><span class="pre">nonant_ef_suppl_list</span></code> (that is passed through to the <code class="docutils literal notranslate"><span class="pre">ScenarioNode</span></code> constructor). This is a list similar to the nonanticipate Var list. These variables will not be given
+multipliers by algorithms such as PH, but will be given non-anticipativity
+constraints when an EF is formed, either to solve the EF or when bundles are
+formed. For some problems, with the appropriate solver, adding redundant nonanticipativity constraints
+for auxilliary variables to the bundle/EF will result in a (much) smaller pre-solved model.</p>
+</section>
+</section>
+<section id="g-calc">
+<h2>g_calc<a class="headerlink" href="#g-calc" title="Link to this heading">¶</a></h2>
+<p>The <cite>g_calc</cite> function evaluates the objective function value g(xhat, xi) for a specified first-stage solution xhat under a fixed scenario of first-stage uncertainties xi. It achieves this by adjusting the first-stage uncertainties in the model to match the provided scenario xi, then solves a constrained optimization problem with the first-stage solution held fixed.</p>
+<dl class="simple">
+<dt>Input:</dt><dd><ul class="simple">
+<li><p>d: A one-dimensional NumPy array representing the uncertainties in the first stage. The g_calc function reformats the array d into the necessary structure for scenario creation within the optimization model.</p></li>
+<li><p>base_model: base_model: A base Pyomo model that defines the optimization problem.</p></li>
+<li><p>cfg: configuration object that contains model-specific settings, including solver name and options.</p></li>
+<li><p>xhat: A candidate solution representing the first-stage decision variables.</p></li>
+</ul>
+</dd>
+<dt>Output:</dt><dd><ul class="simple">
+<li><p>function value <cite>g(xhat, d)</cite> for the given first-stage solution <cite>xhat</cite> and a fixed scenario of first-stage uncertainties <cite>d</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="p-calc">
+<h2>p_calc<a class="headerlink" href="#p-calc" title="Link to this heading">¶</a></h2>
+<p>The <cite>p_calc</cite> function determine the probability or probability density associated with a specified first-stage variable, denoted as xi.  It supports inputs for single scenarios as well as arrays of scenarios,</p>
+<dl class="simple">
+<dt>Input:</dt><dd><ul class="simple">
+<li><p>d: A NumPy array representing the uncertainties in the first stage. This array can be multi-dimensional, where each element or set of elements within the array corresponds to a specific scenario.</p></li>
+<li><p>cfg: configuration object that contains model-specific settings.</p></li>
+</ul>
+</dd>
+<dt>Output:</dt><dd><ul class="simple">
+<li><p>For array-type inputs where d contains multiple scenarios, the function outputs an array of probabilities or probability densities corresponding to each scenario, otherwise it returns a single scalar.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="find-limits">
+<h2>find_limits<a class="headerlink" href="#find-limits" title="Link to this heading">¶</a></h2>
+<p>The find_limits function determines the boundaries for scenarios across each dimension, returning a list of lists. Each inner list comprises two elements, indicating the lower and upper bounds, respectively. Can also return Numpy array.</p>
+</section>
+<section id="kw-creator">
+<h2>kw_creator<a class="headerlink" href="#kw-creator" title="Link to this heading">¶</a></h2>
+<p>Uses the configuration object to return the keyword arguments (if there are any) for the scenario creator</p>
+</section>
+<section id="scenario-names-creator">
+<h2>scenario_names_creator<a class="headerlink" href="#scenario-names-creator" title="Link to this heading">¶</a></h2>
+<p>Return the full list of num_scens scenario names. It has an option start at a scenario number other than zero.</p>
+</section>
+<section id="inparser-adder">
+<h2>inparser_adder<a class="headerlink" href="#inparser-adder" title="Link to this heading">¶</a></h2>
+<p>Add options unique to to the instance to the configuration object.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">smais</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation and Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="canned.html">Pre-built Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Create a new instance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scenario-creator-function"><cite>scenario_creator</cite> function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#g-calc">g_calc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#p-calc">p_calc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#find-limits">find_limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kw-creator">kw_creator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scenario-names-creator">scenario_names_creator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inparser-adder">inparser_adder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="refs.html">References</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="canned.html" title="previous chapter">Pre-built Examples</a></li>
+      <li>Next: <a href="refs.html" title="next chapter">References</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023-2024.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/build_your_own.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
