@@ -16,7 +16,7 @@ where ``filename`` is the name of a Python such as `farmer.json` that contains a
 Currently the following four method were supported:
     - "MC": Regular MC, use Sobol Sequence to sample from the domain, and use rejection sampling to mimic the process of sampling from the distribtion `p`
 
-    - "Parpas": A MCMC-IS method in [PUWT15]_
+    - "Parpas": A MCMC-IS method in [PUWT15]_. This is only intended for use with the CVaR example.
 
     - "Surrogate_Serial": A serial implementation of the smais method
 

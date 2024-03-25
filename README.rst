@@ -67,3 +67,4 @@ To test your installation, assuming that you have Gurobi installed,
 If you don't have Gurobi Installed, edit `examples/newsvendor_is.json` and change the solver name.
 
 
+To see Documentation, open `doc/html/index.html`
