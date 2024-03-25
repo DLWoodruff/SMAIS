@@ -1,5 +1,5 @@
-boot-sp
-========
+SMAIS
+=====
 
 Support for confidence intervals assocated with stochastic programs
 based on a scenario discretization of the uncertainty. For
@@ -13,7 +13,6 @@ parallelization, MPI is used.
    commands.rst
    canned.rst
    build_your_own.rst
-   optional.rst
    refs.rst
 
 Indices and Tables

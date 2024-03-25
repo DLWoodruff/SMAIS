@@ -9,6 +9,8 @@ helps with understanding that and also provides information for users who want t
 An instance is defined by a ``Python module``, which is usually a file with a ``.py`` filename extension.
 The file ``/examples/cvar_is.py`` is a simple example and the file ``/examples/farmer_is.py`` is a more complicated example.
 
+In order to use this package, you need to have a candidate solution `xhat` in a file with special format (numpy). 
+To create this npy file, you need to use mpi-sppy.
 
 `scenario_creator` function
 ---------------------------
@@ -63,13 +65,15 @@ g_calc
 ------
 
 The `g_calc` function evaluates the objective function value g(xhat, xi) for a specified first-stage solution xhat under a fixed scenario of first-stage uncertainties xi. It achieves this by adjusting the first-stage uncertainties in the model to match the provided scenario xi, then solves a constrained optimization problem with the first-stage solution held fixed. 
+
 Input:
-   d: A one-dimensional NumPy array representing the uncertainties in the first stage. The g_calc function reformats the array d into the necessary structure for scenario creation within the optimization model.
-   base_model: base_model: A base Pyomo model that defines the optimization problem. 
-   cfg: configuration object that contains model-specific settings, including solver name and options. 
-   xhat: A candidate solution representing the first-stage decision variables.
+   - d: A one-dimensional NumPy array representing the uncertainties in the first stage. The g_calc function reformats the array d into the necessary structure for scenario creation within the optimization model.
+   - base_model: base_model: A base Pyomo model that defines the optimization problem. 
+   - cfg: configuration object that contains model-specific settings, including solver name and options. 
+   - xhat: A candidate solution representing the first-stage decision variables.
+
 Output:
-   function value `g(xhat, d)` for the given first-stage solution `xhat` and a fixed scenario of first-stage uncertainties `d`. 
+   - function value `g(xhat, d)` for the given first-stage solution `xhat` and a fixed scenario of first-stage uncertainties `d`. 
 
 
 
@@ -77,11 +81,13 @@ p_calc
 ------
 
 The `p_calc` function determine the probability or probability density associated with a specified first-stage variable, denoted as xi.  It supports inputs for single scenarios as well as arrays of scenarios, 
+
 Input:
-   d: A NumPy array representing the uncertainties in the first stage. This array can be multi-dimensional, where each element or set of elements within the array corresponds to a specific scenario. 
-   cfg: configuration object that contains model-specific settings. 
+   - d: A NumPy array representing the uncertainties in the first stage. This array can be multi-dimensional, where each element or set of elements within the array corresponds to a specific scenario. 
+   - cfg: configuration object that contains model-specific settings. 
+
 Output:
-   For array-type inputs where d contains multiple scenarios, the function outputs an array of probabilities or probability densities corresponding to each scenario, otherwise it returns a single scalar.
+   - For array-type inputs where d contains multiple scenarios, the function outputs an array of probabilities or probability densities corresponding to each scenario, otherwise it returns a single scalar.
 
 
 
