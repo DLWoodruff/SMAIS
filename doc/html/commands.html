@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Commands &#8212; smais 0.2.dev0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <script src="_static/documentation_options.js?v=b420214a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pre-built Examples" href="canned.html" />
+    <link rel="prev" title="Installation and Quick Start" href="install.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="commands">
+<span id="id1"></span><h1>Commands<a class="headerlink" href="#commands" title="Link to this heading">¶</a></h1>
+<section id="running-the-programs">
+<h2>Running the programs<a class="headerlink" href="#running-the-programs" title="Link to this heading">¶</a></h2>
+<p>The most general way is to use the <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span></code> terminal command for the program for the desired mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>smais.simulate_main<span class="w"> </span>filename<span class="w"> </span>method
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">filename</span></code> is the name of a Python such as <cite>farmer.json</cite> that contains a full <a class="reference internal" href="#arguments"><span class="std std-ref">Arguments</span></a> set for the simulation, and <code class="docutils literal notranslate"><span class="pre">method</span></code> specify which method to run.
+Currently the following four method were supported:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>“MC”: Regular MC, use Sobol Sequence to sample from the domain, and use rejection sampling to mimic the process of sampling from the distribtion <cite>p</cite></p></li>
+<li><p>“Parpas”: A MCMC-IS method in <a class="reference internal" href="refs.html#puwt15" id="id2"><span>[PUWT15]</span></a></p></li>
+<li><p>“Surrogate_Serial”: A serial implementation of the smais method</p></li>
+<li><p>“Surrogate_Parallel”: A parallel implementation of the smais method, the number of processes is specified in json file</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="arguments">
+<span id="id3"></span><h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">¶</a></h2>
+<p>The argument values are all given in a json file. In the json format, all string values are quote delimited.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">module_name</span></code>, n/a: The name of of the python module that has the scenario creator and help functions given in the json file as a string such as “farmer_is”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xhat_fname</span></code>: When xhat (the estimated, or candidate) solution is computed by another program (which is common and recommended in simulation mode), this argument gives the name of an numpy file that has the solution as string such as “xhat.npy”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_sample_size</span></code>: Sample size for initial training sample. It corresponds to M in the paper and is given as an integer such as 40.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">assess_size</span></code>: Specifies the sample size used to evaluate the quality of intermediate surrogate models. This involves drawing samples based on the probability density function associated with the surrogate model and comparing the values predicted by the surrogate model with the actual function values. The sample size is defined as an integer, for instance, 20.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">additional_sample_size</span></code>: Determines the sample size for further assessing the quality of intermediate surrogate models, by drawing uniformly distributed random samples and comparing the surrogate model’s predictions with the actual function values. Similar to assess_size, this sample size is also specified as an integer, such as 20.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sp_integral_size</span></code>: Sample size for evaluating the integral of the surrogate model to determine the proper scaling of the importance sampling function. It corresponds to K in the paper and is given as a relatively large integer such as 1000.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">adaptive_error_threshold_factor</span></code>: This parameter sets the threshold factor for identifying assessment samples with relatively large errors. If the absolute error between the surrogate model prediction and the actual function value exceeds this factor multiplied by the maximum value of the function, the error is deemed to be relatively large. It should be specified as a floating-point number between 0 and 1. It is denoted as c_beta in the paper.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">evaluation_N</span></code>: Max number of samples to draw from the importance sampling function for the final estimation. It corresponds to N in the paper, and is given as an integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_iter</span></code>: Max iteration allowed when adaptively train the surrogate model. It corresponds to N in the paper, and is given as an integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seed_offset</span></code>: This option is provided so that modelers who want to enable replication with difference seeds can do so.. It is given as an integer. Unless you have a reason to do otherwise, just use 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">solver_name</span></code>: The name of the solver to be used given as a string such as “gurobi_direct”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">solver_options`</span></code>: A string specifying options for the solver, which are passed directly to it. For example, to set the number of threads used by the solver, use <cite>thread=2</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">surrogate_json</span></code>: Specifies the filename of a JSON file that contains information about the surrogate model type and its parameters. The value should be provided as a string, for example, “KRG.json”. The JSON file must include two key elements:</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>“surrogate_type”: A string identifying the type of surrogate model. Supported types currently include ‘KRG’, ‘RBF’, and ‘RMTB’.</p></li>
+<li><p>“kwargs”: A dictionary containing additional arguments specific to the surrogate model type.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">log_frequency</span></code>: Defines the frequency at which intermediate results are printed out during the final evaluation process, with the unit being seconds. This parameter is provided as either a float number or an integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_precesses</span></code>:  Specifies the maximum number of processes to be utilized for parallel computation. If the system has fewer processes available than the specified number, the “Surrogate_Parallel” method will automatically employ all available processes. This option is for “Surrogate_Parallel” only and is ignored for other methods.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">assess_batch_size</span></code>: the batch size for each set of parallelized rejection sampling operations during the surrogate assessment phase. It is given as an integer, such as 200. This option is for “Surrogate_Parallel” only and is ignored for other methods.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">eval_batch_size</span></code>: Specifies the batch size for each set of parallelized rejection sampling and function evaluation operations conducted during the final evaluation phase.  It is given as an integer, such as 100. This option is for “Surrogate_Parallel” only and is ignored for other methods.</p></li>
+</ul>
+<p>In addition to these arguments, there may be problem-specific arguments (e.g. “crops_multiplier” for
+the scalable farmer problem).</p>
+</section>
+<section id="farmer-examples">
+<h2>Farmer Examples<a class="headerlink" href="#farmer-examples" title="Link to this heading">¶</a></h2>
+<p>cd to <code class="docutils literal notranslate"><span class="pre">/examples/farmer_is</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>smais.simulate_main<span class="w"> </span>farmer_is.json<span class="w"> </span>Surrogate_Serial
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">smais</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation and Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-programs">Running the programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arguments">Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#farmer-examples">Farmer Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="canned.html">Pre-built Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_your_own.html">Create a new instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refs.html">References</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install.html" title="previous chapter">Installation and Quick Start</a></li>
+      <li>Next: <a href="canned.html" title="next chapter">Pre-built Examples</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023-2024.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/commands.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Optional module functions &#8212; smais 0.1.dev0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <script src="_static/documentation_options.js?v=ce969aa5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="refs.html" />
+    <link rel="prev" title="Create a new instance" href="build_your_own.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="optional-module-functions">
+<span id="optional"></span><h1>Optional module functions<a class="headerlink" href="#optional-module-functions" title="Link to this heading">¶</a></h1>
+<p>These functions are needed for xhat creation and finding an assumed optimal; they do not need to be supplied if they are created
+elsewhere (the assumed optimal is not needed for user mode). They can be created elsewhere using the <code class="docutils literal notranslate"><span class="pre">boot_general_prep.py</span></code> program,
+for example.</p>
+<section id="xhat-generator">
+<span id="id1"></span><h2>xhat_generator<a class="headerlink" href="#xhat-generator" title="Link to this heading">¶</a></h2>
+<p>The xhat generator function is assumed to have the name
+<code class="docutils literal notranslate"><span class="pre">xhat_generator_I</span></code> where I is replaced by the module name, e.g.,
+<code class="docutils literal notranslate"><span class="pre">xhat_generator_farmer</span></code>.  The first argument is a list of scenario names, the second argument is the solver name, the third
+argument is solver options and subsequent arguments are problem dependent and match the problem dependent arguments
+for the <code class="docutils literal notranslate"><span class="pre">scenario_creator</span></code> function. Here is the function signature for the farmer example:</p>
+</section>
+<section id="scenario-denouement">
+<h2>scenario_denouement<a class="headerlink" href="#scenario-denouement" title="Link to this heading">¶</a></h2>
+<p>This function, if present, is called by <code class="docutils literal notranslate"><span class="pre">mpi-sppy</span></code> for each scenario at termination and will usually not be called by <code class="docutils literal notranslate"><span class="pre">boot-sp</span></code>. For most
+applications, even in <code class="docutils literal notranslate"><span class="pre">mpi-sppy</span></code>, the function simply contains <cite>pass</cite>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">smais</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation and Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="canned.html">Pre-built Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_your_own.html">Create a new instance</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Optional module functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#xhat-generator">xhat_generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scenario-denouement">scenario_denouement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="refs.html">References</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="build_your_own.html" title="previous chapter">Create a new instance</a></li>
+      <li>Next: <a href="refs.html" title="next chapter">References</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023-2024.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/optional.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
